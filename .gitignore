@@ -1,2 +1,4 @@
 0-reset.sql
 README.pdf
+.gitignore
+.DS_STORE
