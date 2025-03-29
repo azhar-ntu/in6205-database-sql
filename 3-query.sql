@@ -205,9 +205,11 @@ SELECT transaction_id, fine_amount, 'pending'
 FROM TRANSACTION
 WHERE transaction_id = 8 AND fine_amount > 0;
 
--- List all overdue books with calculated fines
+-- List all overdue books with calculated fines (ignoring fines as 0 and showing one fee per user and book)
 SELECT 
-    t.transaction_id, u.full_name, b.title, 
+    MIN(t.transaction_id) AS transaction_id, -- Select the earliest transaction ID for uniqueness
+    u.full_name, 
+    b.title, 
     t.due_date, 
     DATEDIFF(CURRENT_TIMESTAMP, t.due_date) AS days_overdue,
     t.fine_amount AS calculated_fine
@@ -216,6 +218,8 @@ JOIN USER u ON t.user_id = u.user_id
 JOIN BOOK b ON t.book_id = b.book_id
 WHERE t.due_date < CURRENT_TIMESTAMP 
 AND t.return_date IS NULL
+AND t.fine_amount > 0
+GROUP BY u.user_id, b.book_id, t.due_date, t.fine_amount
 ORDER BY days_overdue DESC;
 
 /*markdown
