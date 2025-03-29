@@ -111,14 +111,21 @@ INSERT INTO TRANSACTION (user_id, book_id, borrow_date, due_date, return_date, t
 (5, 2, '2025-01-15 11:45:00', '2025-01-29 11:45:00', '2025-01-28 16:20:00', 'returned', 'Slight damage on page 15, noted.'),
 (6, 3, '2025-01-20 14:00:00', '2025-02-03 14:00:00', '2025-02-01 10:30:00', 'returned', 'Returned on time.'),
 (7, 4, '2025-01-25 15:30:00', '2025-02-08 15:30:00', '2025-02-10 09:45:00', 'returned', 'Returned 2 days late, fine applied.'),
+(4, 1, '2025-01-10 10:30:00', '2025-01-24 10:30:00', '2025-01-22 14:15:00', 'returned', 'Returned in good condition.'),
 -- Active transactions
 (4, 6, '2025-03-01 10:00:00', '2025-03-15 10:00:00', NULL, 'borrowed', 'First-time borrower of Agatha Christie.'),
 (5, 7, '2025-03-05 14:20:00', '2025-03-19 14:20:00', NULL, 'borrowed', 'Reserved for book club.'),
 (6, 9, '2025-03-10 11:30:00', '2025-03-24 11:30:00', NULL, 'borrowed', NULL),
+(5, 7, '2025-03-05 14:20:00', '2025-03-19 14:20:00', NULL, 'borrowed', 'Reserved for book club.'),
+(6, 9, '2025-03-10 11:30:00', '2025-03-24 11:30:00', NULL, 'borrowed', NULL),
+(6, 6, '2025-03-01 10:00:00', '2025-03-15 10:00:00', NULL, 'borrowed', 'First-time borrower of Agatha Christie.'),
 -- Overdue transactions
 (8, 1, '2025-02-25 09:15:00', '2025-03-11 09:15:00', NULL, 'overdue', 'First reminder sent on 2025-03-12.'),
 (7, 2, '2025-02-20 13:45:00', '2025-03-06 13:45:00', NULL, 'overdue', 'Second reminder sent on 2025-03-15.'),
+(8, 1, '2025-02-25 09:15:00', '2025-03-11 09:15:00', NULL, 'overdue', 'First reminder sent on 2025-03-12.'),
+(7, 2, '2025-02-20 13:45:00', '2025-03-06 13:45:00', NULL, 'overdue', 'Second reminder sent on 2025-03-15.'),
 -- Lost book
+(8, 5, '2025-01-05 10:30:00', '2025-01-19 10:30:00', NULL, 'lost', 'User reported book lost on 2025-02-15, charged replacement fee.'),
 (8, 5, '2025-01-05 10:30:00', '2025-01-19 10:30:00', NULL, 'lost', 'User reported book lost on 2025-02-15, charged replacement fee.');
 
 -- Create fines for overdue and lost books
@@ -126,7 +133,10 @@ INSERT INTO FINE (transaction_id, amount, fine_date, payment_date, payment_metho
 (4, 1.00, '2025-02-10 09:45:00', '2025-02-10 09:50:00', 'credit_card', 'paid', 'FIN00001'),
 (8, 5.50, '2025-03-12 10:00:00', NULL, NULL, 'pending', NULL),
 (9, 8.00, '2025-03-07 09:00:00', '2025-03-16 14:30:00', 'paypal', 'paid', 'FIN00002'),
-(10, 25.99, '2025-02-15 11:30:00', '2025-02-15 11:45:00', 'credit_card', 'paid', 'FIN00003');
+(10, 25.99, '2025-02-15 11:30:00', '2025-02-15 11:45:00', 'credit_card', 'paid', 'FIN00003'),
+(11, 3.00, '2025-03-20 10:00:00', '2025-03-21 12:00:00', 'credit_card', 'paid', 'FIN00004'),
+(12, 7.50, '2025-03-18 09:30:00', NULL, NULL, 'pending', NULL),
+(13, 15.00, '2025-03-15 14:00:00', '2025-03-16 10:00:00', 'paypal', 'paid', 'FIN00005');
 
 -- Create reservations
 INSERT INTO RESERVATION (user_id, book_id, reservation_date, expiry_date, reservation_status, queue_position) VALUES
@@ -137,20 +147,23 @@ INSERT INTO RESERVATION (user_id, book_id, reservation_date, expiry_date, reserv
 (8, 10, '2025-03-14 10:20:00', '2025-03-21 10:20:00', 'pending', 3),
 (4, 8, '2025-02-25 13:10:00', '2025-03-04 13:10:00', 'fulfilled', 1),
 (5, 3, '2025-02-10 09:45:00', '2025-02-17 09:45:00', 'expired', 1),
-(6, 4, '2025-02-05 16:30:00', '2025-02-12 16:30:00', 'cancelled', 1);
+(6, 4, '2025-02-05 16:30:00', '2025-02-12 16:30:00', 'cancelled', 1),
+(5, 8, '2025-03-20 09:00:00', '2025-03-27 09:00:00', 'pending', 1),
+(6, 9, '2025-03-21 10:00:00', '2025-03-28 10:00:00', 'pending', 2),
+(7, 10, '2025-03-22 11:00:00', '2025-03-29 11:00:00', 'pending', 3);
 
 -- Create reviews
 INSERT INTO REVIEW (user_id, book_id, rating, review_text, review_date, review_status) VALUES
-(4, 1, 5, 'Absolutely magical! I couldn\'t put it down. Perfect introduction to the wizarding world.', '2025-01-23 15:30:00', 'approved'),
-(5, 2, 4, 'A chilling and thought-provoking dystopian novel. Still relevant today.', '2025-01-29 10:15:00', 'approved'),
-(6, 3, 5, 'A timeless classic. Elizabeth and Darcy\'s relationship development is masterfully written.', '2025-02-02 14:45:00', 'approved'),
 (7, 4, 3, 'Beautifully written but found the characters hard to relate to. The prose is exceptional though.', '2025-02-11 09:20:00', 'approved'),
 (4, 6, 4, 'Christie at her best! The twist at the end was unexpected.', '2025-03-07 16:10:00', 'approved'),
 (5, 7, 5, 'Hemingway\'s simple yet profound style shines in this novella. A true masterpiece.', '2025-03-10 11:30:00', 'approved'),
 (8, 5, 5, 'One of the most important American novels ever written. Scout\'s narrative voice is perfect.', '2025-01-15 13:40:00', 'approved'),
 (6, 9, 4, 'Terrifying and suspenseful. King knows how to create psychological horror.', '2025-03-15 17:25:00', 'pending'),
 (7, 2, 2, 'Found it too depressing and slow-paced. Not my cup of tea.', '2025-02-25 12:35:00', 'rejected'),
-(8, 1, 5, 'Reading this as an adult was just as magical as when I was a kid. Timeless appeal!', '2025-03-05 10:50:00', 'approved');
+(8, 1, 5, 'Reading this as an adult was just as magical as when I was a kid. Timeless appeal!', '2025-03-05 10:50:00', 'approved'),
+(5, 4, 5, 'A masterpiece of the Jazz Age. Fitzgerald\'s prose is stunning.', '2025-03-20 15:00:00', 'approved'),
+(6, 6, 4, 'A gripping mystery with an unforgettable twist.', '2025-03-21 10:30:00', 'approved'),
+(7, 7, 3, 'A bit slow-paced, but the themes are profound.', '2025-03-22 11:00:00', 'pending');
 
 -- Create audit logs
 INSERT INTO AUDIT_LOG (user_id, action, timestamp, ip_address, details) VALUES
@@ -163,7 +176,10 @@ INSERT INTO AUDIT_LOG (user_id, action, timestamp, ip_address, details) VALUES
 (3, 'book_update', '2025-03-05 13:20:15', '192.168.1.102', 'Updated book information for "The Hobbit"'),
 (2, 'reservation_process', '2025-03-10 09:45:50', '192.168.1.101', 'Processed book reservation for Jane Smith'),
 (NULL, 'system_backup', '2025-03-15 03:00:00', NULL, 'Automated system backup completed'),
-(1, 'report_generate', '2025-03-20 14:15:30', '192.168.1.100', 'Generated monthly circulation report');
+(1, 'report_generate', '2025-03-20 14:15:30', '192.168.1.100', 'Generated monthly circulation report'),
+(2, 'transaction_create', '2025-03-20 14:00:00', '192.168.1.101', 'Processed book loan for user Jane Smith'),
+(3, 'fine_collect', '2025-03-21 10:30:00', '192.168.1.102', 'Collected fine payment for overdue book'),
+(1, 'report_generate', '2025-03-22 09:00:00', '192.168.1.100', 'Generated weekly overdue report');
 
 -- Create notifications
 INSERT INTO NOTIFICATION (user_id, notification_type, message, created_date, read_date, status) VALUES
@@ -176,7 +192,10 @@ INSERT INTO NOTIFICATION (user_id, notification_type, message, created_date, rea
 (7, 'fine', 'A fine of $8.00 has been added to your account for overdue book.', '2025-03-07 09:00:00', '2025-03-07 15:40:10', 'read'),
 (4, 'reservation', 'The book you reserved "Beloved" is now available. Please collect within 48 hours.', '2025-03-04 13:15:00', '2025-03-04 14:30:20', 'read'),
 (5, 'reservation', 'The book you reserved "The Hobbit" is now available. Please collect within 48 hours.', '2025-03-17 11:05:00', NULL, 'unread'),
-(4, 'system', 'Welcome to the library management system! Check out our new arrivals section.', '2025-03-10 09:00:00', '2025-03-10 09:05:15', 'read');
+(4, 'system', 'Welcome to the library management system! Check out our new arrivals section.', '2025-03-10 09:00:00', '2025-03-10 09:05:15', 'read'),
+(5, 'reservation', 'Your reserved book "Beloved" is now available for pickup.', '2025-03-20 08:00:00', NULL, 'unread'),
+(6, 'fine', 'A fine of $7.50 has been added to your account for overdue book.', '2025-03-18 09:30:00', NULL, 'unread'),
+(7, 'system', 'Reminder: The library will be closed on March 30th for maintenance.', '2025-03-22 10:00:00', NULL, 'unread');
 
 -- Update database statistics to reflect the seed data
 
@@ -200,3 +219,92 @@ WHERE t.fine_status != f.payment_status;
 UPDATE USER
 SET last_login = '2025-03-22 09:30:45'
 WHERE user_id = 1;
+
+-- Insert transactions with books due in the next three days
+INSERT INTO TRANSACTION (user_id, book_id, borrow_date, due_date, return_date, transaction_status, notes) VALUES
+(4, 1, '2025-03-25 10:00:00', '2025-03-30 10:00:00', NULL, 'borrowed', 'Due soon for user John Doe.'),
+(5, 2, '2025-03-26 11:00:00', '2025-03-31 11:00:00', NULL, 'borrowed', 'Due soon for user Jane Smith.'),
+(6, 3, '2025-03-27 12:00:00', '2025-04-01 12:00:00', NULL, 'borrowed', 'Due soon for user Robert Johnson.');
+
+-- Ensure the corresponding transactions exist for user_id = 7
+INSERT INTO TRANSACTION (transaction_id, user_id, book_id, borrow_date, due_date, return_date, transaction_status, notes) VALUES
+(21, 7, 4, '2025-03-01 10:00:00', '2025-03-15 10:00:00', '2025-03-20 10:00:00', 'returned', 'Returned late, fine applied.'),
+(22, 7, 5, '2025-03-05 11:00:00', '2025-03-19 11:00:00', '2025-03-25 11:00:00', 'returned', 'Returned late, fine applied.');
+
+-- Insert fines for user_id = 7 with pending payment status
+INSERT INTO FINE (transaction_id, amount, fine_date, payment_date, payment_method, payment_status, receipt_number) VALUES
+(21, 10.00, '2025-03-27 09:00:00', NULL, NULL, 'pending', NULL),
+(22, 5.50, '2025-03-28 10:30:00', NULL, NULL, 'pending', NULL);
+
+SELECT * FROM TRANSACTION;
+
+-- Insert reviews for books to meet the query criteria
+INSERT INTO REVIEW (user_id, book_id, rating, review_text, review_date, review_status) VALUES
+-- Reviews for Book ID 1
+(1, 1, 5, 'Amazing book! A must-read for everyone.', '2025-03-01 10:00:00', 'approved'),
+(2, 1, 4, 'Great story, but a bit slow in the middle.', '2025-03-02 11:00:00', 'approved'),
+(3, 1, 5, 'Loved the characters and the plot!', '2025-03-03 12:00:00', 'approved'),
+
+-- Reviews for Book ID 2
+(4, 2, 4, 'A thought-provoking and chilling dystopian novel.', '2025-03-04 13:00:00', 'approved'),
+(5, 2, 5, 'An absolute masterpiece of literature.', '2025-03-05 14:00:00', 'approved'),
+(6, 2, 4, 'Very relevant to today\'s world.', '2025-03-06 15:00:00', 'approved'),
+
+-- Reviews for Book ID 3
+(7, 3, 3, 'A classic, but not my favorite.', '2025-03-07 16:00:00', 'approved'),
+(8, 3, 4, 'Enjoyable and well-written.', '2025-03-08 17:00:00', 'approved'),
+(9, 3, 4, 'A timeless piece of literature.', '2025-03-09 18:00:00', 'approved');
+
+-- Insert transactions for Book ID 1 (with overdue transactions)
+INSERT INTO TRANSACTION (transaction_id, user_id, book_id, borrow_date, due_date, return_date, transaction_status, notes) VALUES
+(31, 1, 1, '2025-03-01 10:00:00', '2025-03-10 10:00:00', '2025-03-15 10:00:00', 'returned', 'Returned late.'),
+(32, 2, 1, '2025-03-05 11:00:00', '2025-03-12 11:00:00', '2025-03-20 11:00:00', 'returned', 'Returned very late.'),
+(33, 3, 1, '2025-03-10 12:00:00', '2025-03-17 12:00:00', NULL, 'overdue', 'Still overdue.'),
+(34, 4, 1, '2025-03-15 13:00:00', '2025-03-22 13:00:00', '2025-03-25 13:00:00', 'returned', 'Returned late.'),
+(35, 5, 1, '2025-03-20 14:00:00', '2025-03-27 14:00:00', NULL, 'borrowed', 'Currently borrowed.');
+
+-- Insert transactions for Book ID 2 (with overdue transactions)
+INSERT INTO TRANSACTION (transaction_id, user_id, book_id, borrow_date, due_date, return_date, transaction_status, notes) VALUES
+(36, 6, 2, '2025-03-01 10:00:00', '2025-03-10 10:00:00', '2025-03-12 10:00:00', 'returned', 'Returned late.'),
+(37, 7, 2, '2025-03-05 11:00:00', '2025-03-12 11:00:00', '2025-03-15 11:00:00', 'returned', 'Returned late.'),
+(38, 8, 2, '2025-03-10 12:00:00', '2025-03-17 12:00:00', NULL, 'overdue', 'Still overdue.'),
+(39, 9, 2, '2025-03-15 13:00:00', '2025-03-22 13:00:00', '2025-03-23 13:00:00', 'returned', 'Returned late.'),
+(40, 10, 2, '2025-03-20 14:00:00', '2025-03-27 14:00:00', NULL, 'borrowed', 'Currently borrowed.');
+
+-- Insert transactions for Book ID 3 (no overdue transactions)
+INSERT INTO TRANSACTION (transaction_id, user_id, book_id, borrow_date, due_date, return_date, transaction_status, notes) VALUES
+(41, 1, 3, '2025-03-01 10:00:00', '2025-03-10 10:00:00', '2025-03-09 10:00:00', 'returned', 'Returned on time.'),
+(42, 2, 3, '2025-03-05 11:00:00', '2025-03-12 11:00:00', '2025-03-11 11:00:00', 'returned', 'Returned on time.'),
+(43, 3, 3, '2025-03-10 12:00:00', '2025-03-17 12:00:00', '2025-03-16 12:00:00', 'returned', 'Returned on time.'),
+(44, 4, 3, '2025-03-15 13:00:00', '2025-03-22 13:00:00', '2025-03-21 13:00:00', 'returned', 'Returned on time.'),
+(45, 5, 3, '2025-03-20 14:00:00', '2025-03-27 14:00:00', NULL, 'borrowed', 'Currently borrowed.'),
+(46, 6, 3, '2025-03-01 10:00:00', '2025-03-10 10:00:00', '2025-03-15 10:00:00', 'returned', 'Returned late.'),
+(47, 7, 3, '2025-03-05 11:00:00', '2025-03-12 11:00:00', NULL, 'overdue', 'Still overdue.'),
+(48, 8, 3, '2025-03-10 12:00:00', '2025-03-17 12:00:00', '2025-03-20 12:00:00', 'returned', 'Returned late.');
+
+-- Insert audit logs for suspicious login attempts
+INSERT INTO AUDIT_LOG (user_id, action, timestamp, ip_address, details) VALUES
+-- Suspicious attempts from IP 192.168.1.101
+(1, 'login_attempt', '2025-03-28 08:00:00', '192.168.1.101', 'Login failed: Incorrect password'),
+(1, 'login_attempt', '2025-03-28 08:05:00', '192.168.1.101', 'Login failed: Incorrect password'),
+(1, 'login_attempt', '2025-03-28 08:10:00', '192.168.1.101', 'Login failed: Incorrect password'),
+(1, 'login_attempt', '2025-03-28 08:15:00', '192.168.1.101', 'Login failed: Incorrect password'),
+(1, 'login_attempt', '2025-03-28 08:20:00', '192.168.1.101', 'Login failed: Incorrect password'),
+
+-- Suspicious attempts from IP 192.168.1.102
+(2, 'login_attempt', '2025-03-28 09:00:00', '192.168.1.102', 'Login failed: User does not exist'),
+(2, 'login_attempt', '2025-03-28 09:05:00', '192.168.1.102', 'Login failed: User does not exist'),
+(2, 'login_attempt', '2025-03-28 09:10:00', '192.168.1.102', 'Login failed: User does not exist'),
+(2, 'login_attempt', '2025-03-28 09:15:00', '192.168.1.102', 'Login failed: User does not exist'),
+(2, 'login_attempt', '2025-03-28 09:20:00', '192.168.1.102', 'Login failed: User does not exist'),
+
+-- Suspicious attempts from IP 192.168.1.103
+(3, 'login_attempt', '2025-03-28 10:00:00', '192.168.1.103', 'Login failed: Account locked'),
+(3, 'login_attempt', '2025-03-28 10:05:00', '192.168.1.103', 'Login failed: Account locked'),
+(3, 'login_attempt', '2025-03-28 10:10:00', '192.168.1.103', 'Login failed: Account locked'),
+(3, 'login_attempt', '2025-03-28 10:15:00', '192.168.1.103', 'Login failed: Account locked'),
+(3, 'login_attempt', '2025-03-28 10:20:00', '192.168.1.103', 'Login failed: Account locked');
+
+UPDATE AUDIT_LOG
+SET timestamp = CURRENT_TIMESTAMP
+WHERE action = 'login_attempt';
