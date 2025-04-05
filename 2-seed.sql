@@ -320,6 +320,11 @@ INSERT INTO AUDIT_LOG (user_id, action, timestamp, ip_address, details) VALUES
 (3, 'login_attempt', '2025-04-05 07:45:00', '192.168.1.103', 'Login failed: Account locked'),
 (3, 'login_attempt', '2025-04-05 07:46:00', '192.168.1.103', 'Login failed: Account locked');
 
+INSERT INTO AUDIT_LOG (user_id, action, ip_address, details)
+VALUES (5, 'login_attempt', '192.168.1.105', 'Successful login');
+INSERT INTO AUDIT_LOG (user_id, action, ip_address, details)
+VALUES (2, 'book_add', '192.168.1.101', 'Added new book: "The Silmarillion"');
+
 UPDATE AUDIT_LOG
 SET timestamp = CURRENT_TIMESTAMP
 WHERE action = 'login_attempt';

@@ -462,14 +462,6 @@ ORDER BY reservation_to_copy_ratio DESC;
 ---
 */
 
--- Track user login attempts
-INSERT INTO AUDIT_LOG (user_id, action, ip_address, details)
-VALUES (5, 'login_attempt', '192.168.1.105', 'Successful login');
-
--- Track book operations
-INSERT INTO AUDIT_LOG (user_id, action, ip_address, details)
-VALUES (2, 'book_add', '192.168.1.101', 'Added new book: "The Silmarillion"');
-
 -- Query recent system activity 
 SELECT 
     al.log_id, u.full_name, al.action, 
