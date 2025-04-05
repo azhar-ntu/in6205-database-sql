@@ -154,8 +154,7 @@ INSERT INTO RESERVATION (user_id, book_id, reservation_date, expiry_date, reserv
 (5, 3, '2025-02-10 09:45:00', '2025-02-17 09:45:00', 'expired', 1),
 (6, 4, '2025-02-05 16:30:00', '2025-02-12 16:30:00', 'cancelled', 1),
 (5, 8, '2025-03-20 09:00:00', '2025-03-27 09:00:00', 'pending', 1),
-(6, 9, '2025-03-21 10:00:00', '2025-03-28 10:00:00', 'pending', 2),
-(7, 10, '2025-03-22 11:00:00', '2025-03-29 11:00:00', 'pending', 3);
+(6, 9, '2025-03-21 10:00:00', '2025-03-28 10:00:00', 'pending', 2);
 
 -- Create reviews
 INSERT INTO REVIEW (user_id, book_id, rating, review_text, review_date, review_status) VALUES
