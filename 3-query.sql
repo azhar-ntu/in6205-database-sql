@@ -269,7 +269,58 @@ SET
 WHERE fine_id = 3;
 
 /*markdown
-## 7. Book Reservations & Notifications Queries
+## 7. User Reviews & Ratings Queries
+---
+*/
+
+-- Add a new review
+INSERT INTO REVIEW (user_id, book_id, rating, review_text)
+VALUES (6, 7, 4, 'A fantastic classic that holds up well. The prose is sparse but powerful.');
+
+-- Get average rating for a book
+SELECT 
+    b.book_id, b.title,
+    COUNT(r.review_id) AS review_count,
+    ROUND(AVG(r.rating), 1) AS average_rating
+FROM BOOK b
+LEFT JOIN REVIEW r ON b.book_id = r.book_id
+WHERE b.book_id = 1 AND r.review_status = 'approved'
+GROUP BY b.book_id, b.title;
+
+-- Get all reviews for a book
+SELECT 
+    r.review_id, u.full_name, r.rating, r.review_text, 
+    r.review_date, r.review_status
+FROM REVIEW r
+JOIN USER u ON r.user_id = u.user_id
+WHERE r.book_id = 1
+ORDER BY r.review_date DESC;
+
+-- Moderate reviews (approve/reject)
+UPDATE REVIEW
+SET review_status = 'approved'
+WHERE review_id = 8;
+
+-- Find top-rated books (with at least 3 reviews)
+SELECT 
+    b.book_id, b.title, 
+    COUNT(r.review_id) AS review_count,
+    ROUND(AVG(r.rating), 1) AS average_rating
+FROM BOOK b
+JOIN REVIEW r ON b.book_id = r.book_id
+WHERE r.review_status = 'approved'
+GROUP BY b.book_id, b.title
+HAVING COUNT(r.review_id) >= 3
+ORDER BY average_rating DESC, review_count DESC
+LIMIT 10;
+
+-- Check if a user has already reviewed a book
+SELECT COUNT(*) > 0 AS already_reviewed
+FROM REVIEW
+WHERE user_id = 5 AND book_id = 7;
+
+/*markdown
+## 8. Book Reservations & Notifications Queries
 ---
 */
 
@@ -325,57 +376,6 @@ SET queue_position = queue_position - 1
 WHERE book_id = 10
 AND reservation_status = 'pending'
 AND queue_position > 1;
-
-/*markdown
-## 8. User Reviews & Ratings Queries
----
-*/
-
--- Add a new review
-INSERT INTO REVIEW (user_id, book_id, rating, review_text)
-VALUES (6, 7, 4, 'A fantastic classic that holds up well. The prose is sparse but powerful.');
-
--- Get average rating for a book
-SELECT 
-    b.book_id, b.title,
-    COUNT(r.review_id) AS review_count,
-    ROUND(AVG(r.rating), 1) AS average_rating
-FROM BOOK b
-LEFT JOIN REVIEW r ON b.book_id = r.book_id
-WHERE b.book_id = 1 AND r.review_status = 'approved'
-GROUP BY b.book_id, b.title;
-
--- Get all reviews for a book
-SELECT 
-    r.review_id, u.full_name, r.rating, r.review_text, 
-    r.review_date, r.review_status
-FROM REVIEW r
-JOIN USER u ON r.user_id = u.user_id
-WHERE r.book_id = 1
-ORDER BY r.review_date DESC;
-
--- Moderate reviews (approve/reject)
-UPDATE REVIEW
-SET review_status = 'approved'
-WHERE review_id = 8;
-
--- Find top-rated books (with at least 3 reviews)
-SELECT 
-    b.book_id, b.title, 
-    COUNT(r.review_id) AS review_count,
-    ROUND(AVG(r.rating), 1) AS average_rating
-FROM BOOK b
-JOIN REVIEW r ON b.book_id = r.book_id
-WHERE r.review_status = 'approved'
-GROUP BY b.book_id, b.title
-HAVING COUNT(r.review_id) >= 3
-ORDER BY average_rating DESC, review_count DESC
-LIMIT 10;
-
--- Check if a user has already reviewed a book
-SELECT COUNT(*) > 0 AS already_reviewed
-FROM REVIEW
-WHERE user_id = 5 AND book_id = 7;
 
 /*markdown
 ## 9. Reports & Analytics Queries
